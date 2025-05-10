@@ -106,19 +106,6 @@ projet/
 4. Extraction par expressions régulières
 5. Présentation et export des résultats
 
-## Personnalisation
-
-Pour ajouter un nouveau type de document :
-1. Créer une méthode d'extraction dans `data_extractor.py`
-2. Ajouter l'option dans les formulaires
-
-Les patterns d'extraction peuvent être modifiés dans `data_extractor.py`.
-
-## Performances
-
-- Précision : 85-95% (variable selon qualité d'image)
-- Temps de traitement : 1-3s par document
-- Limite de taille : 16 Mo par fichier
 
 ## Améliorations possibles
 
