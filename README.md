@@ -18,37 +18,6 @@ Application web Flask permettant d'extraire des données structurées à partir 
 - Tesseract OCR 4.0+
 - Navigateur web récent
 
-## Installation
-
-1. Cloner le dépôt
-```bash
-git clone https://github.com/username/ocr-document-parser.git
-cd ocr-document-parser
-```
-
-2. Créer un environnement virtuel
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
-```
-
-3. Installer les dépendances
-```bash
-pip install -r requirements.txt
-```
-
-4. Installer Tesseract OCR
-```bash
-
-brew install tesseract
-
-```
-
-5. Créer les dossiers requis
-```bash
-mkdir uploads output
-```
 
 ## Utilisation
 
