@@ -1,0 +1,82 @@
+/* Styles personnalisés pour l'application */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 8px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Style pour les images de prévisualisation */
+.preview-image {
+    max-height: 200px;
+    object-fit: contain;
+    margin-top: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+/* Style pour la zone de glisser-déposer */
+.dropzone {
+    border: 2px dashed #0d6efd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropzone:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.dropzone.active {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* Style pour le texte brut */
+pre {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Style pour les tableaux */
+.table {
+    font-size: 0.9rem;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+/* Style pour les badges */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}

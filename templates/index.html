@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Extraction de Documents</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">OCR et Extraction de Données</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#single" type="button" role="tab" aria-controls="single" aria-selected="true">Fichier unique</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="batch-tab" data-bs-toggle="tab" data-bs-target="#batch" type="button" role="tab" aria-controls="batch" aria-selected="false">Traitement par lot</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="files-tab" data-bs-toggle="tab" data-bs-target="#files" type="button" role="tab" aria-controls="files" aria-selected="false">Fichiers de sortie</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="myTabContent">
+                            <!-- Onglet Fichier unique -->
+                            <div class="tab-pane fade show active" id="single" role="tabpanel" aria-labelledby="single-tab">
+                                <h5 class="card-title">Traiter un document</h5>
+                                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="file" class="form-label">Sélectionner une image</label>
+                                        <input class="form-control" type="file" id="file" name="file" accept=".png,.jpg,.jpeg,.tif,.tiff,.pdf" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="document_type" class="form-label">Type de document</label>
+                                        <select class="form-select" id="document_type" name="document_type">
+                                            <option value="ticket" selected>Ticket de caisse</option>
+                                            <option value="facture">Facture</option>
+                                            <option value="releve">Relevé bancaire</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="output_format" class="form-label">Format de sortie</label>
+                                        <select class="form-select" id="output_format" name="output_format">
+                                            <option value="json" selected>JSON</option>
+                                            <option value="csv">CSV</option>
+                                            <option value="excel">Excel</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Traiter le document</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Onglet Traitement par lot -->
+                            <div class="tab-pane fade" id="batch" role="tabpanel" aria-labelledby="batch-tab">
+                                <h5 class="card-title">Traitement par lot</h5>
+                                <form action="{{ url_for('batch_process') }}" method="post" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="files" class="form-label">Sélectionner plusieurs fichiers</label>
+                                        <input class="form-control" type="file" id="files" name="files[]" accept=".png,.jpg,.jpeg,.tif,.tiff,.pdf" multiple required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="document_type_batch" class="form-label">Type de document</label>
+                                        <select class="form-select" id="document_type_batch" name="document_type">
+                                            <option value="ticket" selected>Ticket de caisse</option>
+                                            <option value="facture">Facture</option>
+                                            <option value="releve">Relevé bancaire</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="output_format_batch" class="form-label">Format de sortie</label>
+                                        <select class="form-select" id="output_format_batch" name="output_format">
+                                            <option value="csv" selected>CSV</option>
+                                            <option value="excel">Excel</option>
+                                            <option value="json">JSON</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Traiter les documents</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Onglet Fichiers de sortie -->
+                            <div class="tab-pane fade" id="files" role="tabpanel" aria-labelledby="files-tab">
+                                <h5 class="card-title">Fichiers de sortie disponibles</h5>
+                                <div id="files-list">
+                                    <p class="text-center">Chargement des fichiers...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Charger la liste des fichiers quand on clique sur l'onglet
+        document.getElementById('files-tab').addEventListener('click', function() {
+            fetch('/files')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('files-list').innerHTML = html;
+                })
+                .catch(error => {
+                    document.getElementById('files-list').innerHTML = '<p class="text-danger">Erreur lors du chargement des fichiers</p>';
+                });
+        });
+    </script>
+</body>
+</html>
